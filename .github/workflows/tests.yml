@@ -1,0 +1,38 @@
+# .github/workflows/demo.yml
+
+name: CI
+on:
+    push:
+        branches: ["main"]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: Build and start services
+                working-directory: learn_javascript
+                run: docker compose up --build -d
+
+            - name: Wait for server to be ready
+                run: |
+                    for i in {1..30}; do
+                        if curl -fsS http://localhost:8080/ >/dev/null; then
+                            exit 0
+                        fi
+                        sleep 2
+                    done
+                    echo "Server did not become ready in time"
+                    exit 1
+
+            - name: Smoke test endpoints
+                run: |
+                    curl -fsS http://localhost:8080/ >/dev/null
+                    curl -fsS http://localhost:8080/books >/dev/null
+
+            - name: Tear down
+                if: always()
+                working-directory: learn_javascript
+                run: docker compose down

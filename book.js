@@ -7,7 +7,7 @@ export default class Book {
         this.price=price;
     }
     static fromJSON(json){
-        return new Book(json.id,json.Title,json.Author,json.Publication_Year,json.Price);
+        return new Book(json.id,json.Title,json.Author,json.Publication_Year,Number(json.Price));
     }
     toJSON(){
         return {
@@ -15,8 +15,8 @@ export default class Book {
             "Title": this.title,
             "Author": this.author,
             "Publication_Year": this.publicationYear,
-            "Price": this.price
-        }
+            "Price": Number(this.price)
+        };
     }
    
     toString(){

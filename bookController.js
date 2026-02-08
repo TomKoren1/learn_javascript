@@ -49,10 +49,10 @@ export const updateBook = (req,res) => {
     const foundBook = books.find(book => book.id === bookId);
 
     if (foundBook){
-        foundBook.title = newBook.title || foundBook.title;
-        foundBook.author = newBook.author || foundBook.author;
-        foundBook.price = newBook.price || foundBook.price;
-        foundBook.publicationYear = newBook.publicationYear || foundBook.publicationYear;
+        foundBook.title = newBook.title ?? foundBook.title;
+        foundBook.author = newBook.author ?? foundBook.author;
+        foundBook.price = newBook.price ?? foundBook.price;
+        foundBook.publicationYear = newBook.publicationYear ?? foundBook.publicationYear;
         console.log(`Book id ${foundBook.id} updated successfully`);
         res.json({
             message: "Book updated successfully",

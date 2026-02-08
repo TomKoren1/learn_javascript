@@ -31,6 +31,17 @@ jobs:
           curl -fsS http://localhost:8080/ >/dev/null
           curl -fsS http://localhost:8080/books >/dev/null
 
+      - name: CRUD book flow
+        run: |
+          curl -fsS -X POST http://localhost:8080/books \
+            -H "Content-Type: application/json" \
+            -d '{"id":"99","Title":"CI Book","Author":"CI Author","Publication_Year":"2026","Price":12.34}' >/dev/null
+          curl -fsS -X PUT http://localhost:8080/books/99 \
+            -H "Content-Type: application/json" \
+            -d '{"id":"99","Title":"CI Book Updated","Author":"CI Author","Publication_Year":"2026","Price":15.99}' >/dev/null
+          curl -fsS http://localhost:8080/books >/dev/null
+          curl -fsS -X DELETE http://localhost:8080/books/99 >/dev/null
+
       - name: Tear down
         if: always()
         run: docker compose down
